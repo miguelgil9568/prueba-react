@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Formik } from 'formik'
+import React, { isValidElement, useState } from 'react'
+import { ErrorMessage, Formik, validateYupSchema } from 'formik'
 import *  as Yup from 'yup'
 import Divider from '@mui/joy/Divider';
 import Input from '@mui/joy/Input';
@@ -20,7 +20,7 @@ const validateScheme = Yup.object().shape  ({
     apellido: Yup.string().required('El apellido es requerido'),
     correo: Yup.string().required('El correo es requerido'),
     direccion: Yup.string().required('El direccion es requerido'),
-    numeroContacto: Yup.number().max(9999999999).required('El numero de contacto es requerido').required('La cantidad maxima de caracteres es 10')
+    numeroContacto: Yup.number().required('El numero de contacto es requerido').max(9999999999,'La cantidad maxima de digitos es 10')
 })
 
 const CrDatosClientes = () => {
@@ -57,7 +57,9 @@ const CrDatosClientes = () => {
             }}
     
             validationSchema={validateScheme}
-    
+
+            validateOnMount= {true}
+
             onSubmit={(values) => {
                     console.log('Enviado a formik con valores', values);
                     window.alert('informacion adquirida con a formik con valores '+ (JSON.stringify(values)));
